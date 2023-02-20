@@ -27,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
             var senha = binding.editPassword.text.toString()
 
             if(email.isEmpty() || senha.isEmpty()){
-                Toast.makeText(this, "preencha os campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Preencha os campos", Toast.LENGTH_SHORT).show()
             }else {
                 auth.createUserWithEmailAndPassword(email, senha).addOnCompleteListener {
                     if(it.isSuccessful){

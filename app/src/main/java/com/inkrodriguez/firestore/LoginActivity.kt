@@ -12,6 +12,17 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private var auth = FirebaseAuth.getInstance()
 
+    override fun onStart() {
+        super.onStart()
+
+        val usuario = FirebaseAuth.getInstance().currentUser
+
+        if (usuario != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -21,17 +32,20 @@ class LoginActivity : AppCompatActivity() {
             var email = binding.editUsername.text.toString()
             var senha = binding.editPassword.text.toString()
 
-            auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener {
-                if(it.isSuccessful){
-                    startActivity(Intent(applicationContext, MainActivity::class.java))
+            if (email.isEmpty() || senha.isEmpty()) {
+                Toast.makeText(this, "Preencha os campos!", Toast.LENGTH_SHORT).show()
+            } else {
+                auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        startActivity(Intent(applicationContext, MainActivity::class.java))
+                    }
+                }.addOnFailureListener {
+                    Toast.makeText(this, "Usuário ou senha inválidos!", Toast.LENGTH_SHORT).show()
                 }
-            }.addOnFailureListener {
-                Toast.makeText(this, "Usuário ou senha inválidos!", Toast.LENGTH_SHORT).show()
+
+
             }
-
-
         }
-
 
         binding.btnRegisterLoginActivity.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
