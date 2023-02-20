@@ -46,8 +46,27 @@ class MainActivity : AppCompatActivity() {
             db.collection("users").document(nome).addSnapshotListener { it, error ->
                 if (it != null) {
                     var cpf = it.getString("cpf")
+                    var sobrenome = it.getString("sobrenome")
+                    var endereco = it.getString("endereco")
                     binding.editCpf.setText(cpf)
+                    binding.editSobrenome.setText(sobrenome)
+                    binding.editEndereco.setText(endereco)
                 }
+            }
+        }
+
+        binding.btnUpdate.setOnClickListener {
+            var nome = binding.editNome.text.toString()
+            var cpf = binding.editCpf.text.toString()
+            db.collection("users").document(nome).update("cpf", cpf).addOnCompleteListener {
+                Toast.makeText(this, "Dados atualizados com sucesso!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.btnDelete.setOnClickListener {
+            var nome = binding.editNome.text.toString()
+            db.collection("users").document(nome).delete().addOnCompleteListener {
+                Toast.makeText(this, "Este usuário foi removido com sucesso!", Toast.LENGTH_SHORT).show()
             }
         }
 
