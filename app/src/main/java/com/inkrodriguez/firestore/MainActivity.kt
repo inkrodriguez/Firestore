@@ -41,6 +41,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        binding.btnLer.setOnClickListener {
+            var nome = binding.editNome.text.toString()
+            db.collection("users").document(nome).addSnapshotListener { it, error ->
+                if (it != null) {
+                    var cpf = it.getString("cpf")
+                    binding.editCpf.setText(cpf)
+                }
+            }
+        }
+
 
 
         binding.btnLogout.setOnClickListener {
